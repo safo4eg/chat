@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !.(css|js|jpg|png|jpeg|ico)
+RewriteCond %{REQUEST_URI} !/classes/test.php
+RewriteRule .+ index.php
