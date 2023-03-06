@@ -1,4 +1,5 @@
 {{content-class: "profile"}}
+{{script1: "../js/update.js"}}
 
 <div class="avatar">
     <?php if(!isset($_SESSION['view']['profile']['avatar'])) { ?>

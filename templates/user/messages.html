@@ -1,0 +1,35 @@
+{{title: "Сообщения"}}
+{{content-class: "messages"}}
+{{script1: "../js/modal/message-search.js"}}
+
+<a id="openModalMessage" href="" class="dialog">
+    <div class="image-wrapper">
+        <img src="../../media/uploads/default.png" alt="">
+    </div>
+
+    <div class="info">
+        <div class="top">
+            <span class="name">name</span>
+            <span class="online">online</span>
+        </div>
+
+        <span class="message">message</span>
+    </div>
+</a>
+
+
+
+<div class="modal" id="modalMessage">
+    <div class="window">
+        <div class="top">
+            <h3>Новое сообщение</h3>
+        </div>
+
+        <textarea name="message"></textarea>
+
+        <div class="bot">
+            <button class="send-message">Отправить</button>
+            <button id="close-message">Отмена</button>
+        </div>
+    </div>
+</div>

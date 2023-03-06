@@ -15,11 +15,19 @@
         }
     }
 
-    if(preg_match('#^\/(profile)\/(?<id>\d+)$#', $url, $match)) {
+    if(preg_match('#^\/profile\/(?<id>\d+)$#', $url, $match)) {
         $_SESSION['view']['profile'] = $match['id'];
         echo include_once 'handlers/user/profile.php';
     }
 
-    if(preg_match('#^\/(search)(\/(.+))*#', $url, $match)) {
+    if(preg_match('#^\/search(\?chars=(.+)*)?$#', $url, $match)) {
         echo include_once 'handlers/user/search.php';
+    }
+
+    if(preg_match('#^\/messages$#', $url, $match)) {
+        echo include_once 'handlers/user/messages.php';
+    }
+
+    if(preg_match('#^\/update$#', $url, $match)) {
+        echo include_once 'handlers/ajax/update.php';
     }

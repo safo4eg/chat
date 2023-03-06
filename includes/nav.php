@@ -6,6 +6,7 @@
         <?php if($_SESSION['auth']['status'] == 1) { ?>
             <a class="link" href="/profile/<?= $_SESSION['auth']['id'] ?>">Профиль</a>
             <a class="link" href="/search">Пользователи</a>
+            <a class="link" href="/messages">Сообщения</a>
             <a class="link" href="/logout">Выход</a>
         <?php } elseif($_SESSION['auth']['status'] == 2) { ?>
             Статус admin

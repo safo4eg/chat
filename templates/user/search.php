@@ -1,5 +1,7 @@
 {{title: "Пользователи"}}
-{{script: "../js/search.js"}}
+{{script1: "../js/search.js"}}
+{{script2: "../js/update.js"}}
+{{script3: "../js/modal/message-search.js"}}
 
 <div class="search">
     <input type="text" placeholder="Найти пользователя">
@@ -20,14 +22,29 @@
                 <div class="info">
                     <div class="top">
                         <a href="/profile/<?= $user['id'] ?>"><h3><?= $user['login'] ?></h3></a>
-                        <?php if(time() - $user['timestamp'] < 300) { ?>
+                        <?php if(time() - $user['timestamp'] < 60) { ?>
                             <span style="color: cornflowerblue;">online</span>
                         <?php } else { ?>
                             <span style="color: red;">offline</span>
                         <?php } ?>
                     </div>
                     <div class="bot">
-                        <a href="">Написать</a>
+                        <a href="" id="openModalMessage">Написать</a>
+
+                        <div class="modal" id="modalMessage">
+                            <div class="window">
+                                <div class="top">
+                                    <h3>Написать <?= $user['login'] ?></h3>
+                                </div>
+                                <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                <textarea name="message"></textarea>
+                                <div class="bot">
+                                    <button class="send-message">Отправить</button>
+                                    <button id="close-message">Отмена</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

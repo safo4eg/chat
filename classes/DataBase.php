@@ -33,4 +33,29 @@
             for($users = []; $row = mysqli_fetch_assoc($res); $users[] = $row);
             return $users;
         }
+
+        public function setTimestamp($id) {
+            $time = time();
+
+            $user = $this->getUser($id);
+            if(!$user) {
+                http_response_code(400);
+                $error[] = "WARNING: user with id=$id is not defined";
+                $error[] = 'File: DataBase.php, method: setTimestamp';
+                echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                die();
+            }
+
+            $query = "UPDATE users SET timestamp=FROM_UNIXTIME($time) WHERE id={$user['id']}";
+            $res = mysqli_query($this->link, $query);
+            if(!$res) {
+                http_response_code(400);
+                $error[] = 'WARNING: '.mysqli_error($this->link);
+                $error[] = 'File: DataBase.php, method: setTimestamp';
+                echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                die();
+            }
+
+            return "Пользователь с id=$id обновлен";
+        }
     }
