@@ -8,15 +8,19 @@ let fetchParams = {
 
 
 if(CURRENT_URI.search(/^\/profile\/\d+$/) !== -1 || CURRENT_URI.search(/\/search/) !== -1) {
-    fetchParams.body.set('timestamp', '1');
-    sendTimestamp(FETCH_URI, fetchParams, 1000);
+    // fetchParams.body.set('timestamp', '1');
+    // sendTimestamp(FETCH_URI, fetchParams, 1000);
 
     if(CURRENT_URI.search(/^\/search$/) !== -1) {
+        fetchParams.body.set('searchMessage', '1');
         let sendMessageBtn = document.querySelectorAll('.send-message');
         sendMessageBtn.forEach(elem => {
             elem.addEventListener('click', () => {
-                fetchParams.body.set('message', '1');
-                fetchParams.body.set('id', localStorage.getItem('id'));
+                let userId = localStorage.getItem('id');
+                let hiddenInput = document.querySelector(`input[value="${userId}"]`);
+                let textarea = hiddenInput.nextElementSibling;
+                fetchParams.body.set('message', textarea.value);
+                fetchParams.body.set('id', userId);
                 sendMessage(FETCH_URI, fetchParams);
             });
         });

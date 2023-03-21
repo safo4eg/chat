@@ -3,12 +3,21 @@
     include 'classes/DataBase.php';
 
     if(!empty($_POST)) {
+        $currentUserId = $_SESSION['auth']['id'];
         $db = new DataBase($link);
-        if(isset($_POST['timestamp'])) {
-            $response = $db->setTimestamp($_SESSION['auth']['id']);
-            echo json_encode('debug1', JSON_UNESCAPED_UNICODE);
-            die();
+//        if(isset($_POST['timestamp'])) {
+//            $response = $db->setTimestamp($currentUserId);
+//            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+//            die();
+//        }
+
+        if(isset($_POST['searchMessage'])) {
+            $message = $_POST['message'];
+            $companionUserId = $_POST['id'];
+            if($message !== '') {
+                $db->createDialogues($currentUserId, $companionUserId);
+                $db->sendMessage($currentUserId, $companionUserId, $message);
+                die();
+            }
         }
-        echo 'debug2';
-        die();
     }

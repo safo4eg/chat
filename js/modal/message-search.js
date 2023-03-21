@@ -14,7 +14,6 @@ userWrapper.addEventListener('click', event => {
 
           let hiddenInput = modalMessage.querySelector('input[type="hidden"]');
           localStorage.setItem('id', hiddenInput.value);
-          localStorage.setItem('window', modalMessage);
       }
    });
 });
