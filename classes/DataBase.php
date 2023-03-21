@@ -100,7 +100,35 @@
         public function sendMessage($userOneId, $userTwoId, $message) {
             $time = time();
             $membersId = $this->createMembers($userOneId, $userTwoId)['id'];
-            $query = "INSERT INTO messages SET members_id=$membersId, message='$message', time_create=FROM_UNIXTIME($time)";
-            mysqli_query($this->link, $query);
+            $query = "INSERT INTO messages SET members_id=$membersId, user_id=$userOneId, message='$message', time_create=FROM_UNIXTIME($time)";
+            mysqli_query($this->link, $query) or die(mysqli_error($this->link));
+        }
+
+        public function getUserDialogues($userId) {
+            $query = "SELECT d.timestamp as d_timestamp, d.companion_id, u.login, u.avatar, UNIX_TIMESTAMP(u.timestamp) as u_timestamp FROM dialogues as d
+                        INNER JOIN users as u ON d.companion_id=u.id
+                        WHERE d.user_id=$userId
+            ";
+
+            $res = mysqli_query($this->link, $query);
+            for($dialogues = []; $row = mysqli_fetch_assoc($res); $dialogues[] = $row);
+            return $dialogues;
+        }
+
+        public function getMessages($userId, $last=false) {
+            if($last) {
+//                $query = "SELECT members.id, messages.message FROM messages
+//                    INNER JOIN members ON messages.members_id=members.id
+//                    WHERE members.user_one_id=$userId OR members.user_two_id=$userId
+//                ";
+
+                $query = "
+                        SELECT members_id, message FROM messages 
+                        WHERE time_create=(SELECT MAX(time_create) FROM messages as sub_messages WHERE sub_messages.members_id=messages.members_id)";
+
+                $res = mysqli_query($this->link, $query) or die(mysqli_error($this->link));
+                for($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+                return print_r($data);
+            }
         }
     }

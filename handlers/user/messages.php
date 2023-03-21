@@ -3,6 +3,11 @@
     require_once('classes/Page.php');
     require_once('classes/DataBase.php');
 
-    $page = new Page('templates/base.html', 'templates/user/messages.html');
-    $layout = $page->createTemplateVars()->pasteContent();
+    $userId = $_SESSION['auth']['id'];
+    $db = new DataBase($link);
+    $_SESSION['view']['dialogues'] = $db->getUserDialogues($userId);
+
+    $page = new Page('templates/base.html');
+    $layout = $page->getDynamicContent('templates/user/messages.php');
+    return $db->getMessages($userId, true);
     return $layout;

@@ -6,8 +6,11 @@ let fetchParams = {
     body: form,
 }
 
-
-if(CURRENT_URI.search(/^\/profile\/\d+$/) !== -1 || CURRENT_URI.search(/\/search/) !== -1) {
+if(
+    CURRENT_URI.search(/^\/profile\/\d+$/) !== -1 ||
+    CURRENT_URI.search(/^\/search$/) !== -1 ||
+    CURRENT_URI.search(/^\/messages$/) !== -1
+) {
     // fetchParams.body.set('timestamp', '1');
     // sendTimestamp(FETCH_URI, fetchParams, 1000);
 
@@ -24,6 +27,8 @@ if(CURRENT_URI.search(/^\/profile\/\d+$/) !== -1 || CURRENT_URI.search(/\/search
                 sendMessage(FETCH_URI, fetchParams);
             });
         });
+    } else if(CURRENT_URI.search(/^\/messages$/) !== -1) {
+
     }
 }
 
@@ -34,7 +39,6 @@ function sendMessage(uri, body) {
             else return Promise.reject(response.text());
         }).then(
         resolved => {
-            console.log(`Сообщение пользователю с id=${localStorage.getItem('id')} отправлен`);
             let activeModal = document.querySelector('.modal.active-modal');
             activeModal.classList.remove('active-modal');
         },
