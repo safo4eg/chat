@@ -6,7 +6,7 @@
     $userId = $_SESSION['auth']['id'];
     $db = new DataBase($link);
     $dialogues = $db->getUserDialogues($userId);
-    $lastMessages = $db->getMessages($userId, true);
+    $lastMessages = $db->getMessages($userId, 'last');
     foreach($dialogues as $index => $dialogue) {
         foreach($lastMessages as $message) {
             if($dialogue['members_id'] == $message['members_id']) {

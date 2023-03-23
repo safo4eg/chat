@@ -4,119 +4,61 @@
 {{script2: "../js/dialogue.js"}}
 
 <div class="top">
-    <a  class="back" href="">Назад</a>
-    <span class="login">userName</span>
+    <a  class="back" href="/messages">Назад</a>
+    <span class="login"><?= $_SESSION['view']['companion_info']['login'] ?></span>
     <div class="right-block">
         <div class="actions">
             <a href="">Очистить</a>
         </div>
         <a href="" class="image-wrapper">
-            <img src="../../media/uploads/default.png" alt="">
+            <img src="/media/uploads/<?=
+                $_SESSION['view']['companion_info']['avatar']? $_SESSION['view']['companion_info']['avatar']: "default.png"
+            ?>" alt="">
         </a>
     </div>
 </div>
 
 <div class="center">
-    <div class="message">
-        <a href="" class="image-wrapper">
-            <img src="../../media/uploads/default.png" alt="">
-        </a>
-        <div class="right">
-            <span class="login">
-                username
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-        </div>
-    </div>
+    <?php $lastMessageUserId = 0; ?>
+    <?php foreach($_SESSION['view']['messages'] as $message) { ?>
+        <?php if($lastMessageUserId !== $message['user_id']) { ?>
+            <div class="message">
+                <a class="image-wrapper" href="/profile/<?= $message['user_id'] ?>">
+                    <?php if( $message['user_id'] !== $_SESSION['auth']['id']) { ?>
+                        <img src="/media/uploads/<?=
+                        $_SESSION['view']['companion_info']['avatar']? $_SESSION['view']['companion_info']['avatar']: "default.png"
+                        ?>" alt="">
+                    <?php } else { ?>
+                        <img src="/media/uploads/<?=
+                        $_SESSION['view']['user_info']['avatar']? $_SESSION['view']['user_info']['avatar']: "default.png"
+                        ?>" alt="">
+                    <?php } ?>
+                </a>
 
-    <div class="message">
-        <a href="" class="image-wrapper">
-            <img src="../../media/uploads/default.png" alt="">
-        </a>
-        <div class="right">
-            <span class="login">
-                username
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-        </div>
-    </div>
-
-    <div class="message">
-        <a href="" class="image-wrapper">
-            <img src="../../media/uploads/default.png" alt="">
-        </a>
-        <div class="right">
-            <span class="login">
-                username
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-        </div>
-    </div>
-
-    <div class="message">
-        <a href="" class="image-wrapper">
-            <img src="../../media/uploads/default.png" alt="">
-        </a>
-        <div class="right">
-            <span class="login">
-                username
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-        </div>
-    </div>
-
-    <div class="message">
-        <a href="" class="image-wrapper">
-            <img src="../../media/uploads/default.png" alt="">
-        </a>
-        <div class="right">
-            <span class="login">
-                username
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-            <span class="text">
-                Какое-то сообщение
-            </span>
-        </div>
-    </div>
-
+                <div class="right">
+                    <?php if( $message['user_id'] !== $_SESSION['auth']['id']) { ?>
+                        <span class="login"><?= $_SESSION['view']['companion_info']['login'] ?></span>
+                    <?php } else { ?>
+                        <span class="login"><?= $_SESSION['view']['user_info']['login'] ?></span>
+                    <?php } ?>
+                    <span><?= $message['message']?></span>
+                </div>
+            </div>
+            <?php $lastMessageUserId = $message['user_id'] ?>
+        <?php } else { ?>
+            <div class="message empty">
+                <div class="empty-avatar"></div>
+                <div class="right">
+                    <span class="text"><?= $message['message']?></span>
+                </div>
+            </div>
+        <?php } ?>
+    <?php } ?>
 </div>
 
 <div class="bot">
-    <textarea></textarea>
+    <textarea placeholder="Новое сообщение"></textarea>
+    <input type="hidden" value="<?= $_SESSION['view']['companion_info']['id'] ?>">
+    <input type="hidden" value="<?= $lastMessageUserId ?>">
     <button>Send</button>
 </div>

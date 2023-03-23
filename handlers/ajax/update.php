@@ -20,4 +20,12 @@
                 die();
             }
         }
+
+        if(isset($_POST['newMessage'])) {
+            $message = $_POST['message'];
+            $companionUserId = $_POST['companion_id'];
+            $insertedMessageData = $db->sendMessage($currentUserId, $companionUserId, $message);
+            echo json_encode($insertedMessageData, JSON_UNESCAPED_UNICODE);
+            die();
+        }
     }

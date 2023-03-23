@@ -467,9 +467,14 @@ form.auth .errors-wrapper .error:nth-child(n + 2) {
     display: flex;
 }
 
+.content.dialogue .center .message.empty {
+    margin-top: 5px;
+}
+
 .content.dialogue .center .message .right {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
 
     margin-left: 10px;
 }
@@ -496,6 +501,12 @@ form.auth .errors-wrapper .error:nth-child(n + 2) {
 
 .content.dialogue .bot button {
     flex-grow: 1;
+}
+
+.content.dialogue .empty-avatar {
+    height: 20px;
+    width: 40px;
+    margin-left: 10px;
 }
 
 

@@ -29,7 +29,7 @@
     }
 
     if(preg_match('#^\/dialogue/(?<id>\d+)$#', $url, $match)) {
-        $_SESSION['view']['dialogue_id'] = $match['id'];
+        $_SESSION['view']['members_id'] = $match['id'];
         echo include_once 'handlers/user/dialogue.php';
     }
 

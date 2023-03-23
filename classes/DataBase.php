@@ -60,7 +60,7 @@
         }
 
         private function createMembers($userOneId, $userTwoId) {
-            $query = "SELECT id FROM members WHERE user_one_id='$userOneId' && user_two_id='$userTwoId'";
+            $query = "SELECT id FROM members WHERE (user_one_id='$userOneId' && user_two_id='$userTwoId') OR (user_one_id='$userTwoId' && user_two_id='$userOneId')";
             $res = mysqli_query($this->link, $query);
             $members = mysqli_fetch_assoc($res);
             if(!$members) {
@@ -79,7 +79,7 @@
             $res = mysqli_query($this->link, $query);
             for($dialogues = []; $row = mysqli_fetch_assoc($res); $dialogues[] = $row);
 
-            if(!$dialogues) {
+            if(empty($dialogues)) {
                 $query = "INSERT INTO dialogues SET user_id='$userOneId', companion_id='$userTwoId', time_create=FROM_UNIXTIME($time), members_id='$membersId'";
                 mysqli_query($this->link, $query);
 
@@ -102,6 +102,12 @@
             $membersId = $this->createMembers($userOneId, $userTwoId)['id'];
             $query = "INSERT INTO messages SET members_id=$membersId, user_id=$userOneId, message='$message', time_create=FROM_UNIXTIME($time)";
             mysqli_query($this->link, $query) or die(mysqli_error($this->link));
+
+            $idMessage = mysqli_insert_id($this->link);
+            $query = "SELECT * FROM messages WHERE messages.id=$idMessage";
+            $res = mysqli_query($this->link, $query) or die(mysqli_error($this->link));
+            $insertedMessage = mysqli_fetch_assoc($res);
+            return $insertedMessage;
         }
 
         public function getUserDialogues($userId) {
@@ -119,14 +125,23 @@
             return $dialogues;
         }
 
-        public function getMessages($userId, $last=false) {
-            if($last) {
+        public function getMessages($userId, $any) {
+            if($any === 'last') {
                 $query = "
                         SELECT messages.members_id, messages.message, messages.user_id FROM messages
                         WHERE 
                             time_create=(SELECT MAX(time_create) FROM messages as sub_messages WHERE sub_messages.members_id=messages.members_id) 
                         ";
 
+                $res = mysqli_query($this->link, $query) or die(mysqli_error($this->link));
+                for($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+                return $data;
+            } else {
+                $query = "
+                    SELECT dialogues.user_id as companion, messages.user_id, messages.message, messages.time_create as time FROM messages
+                    INNER JOIN dialogues ON dialogues.members_id=messages.members_id
+                    WHERE messages.members_id=$any AND dialogues.user_id != $userId;
+                ";
                 $res = mysqli_query($this->link, $query) or die(mysqli_error($this->link));
                 for($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
                 return $data;
