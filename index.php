@@ -28,6 +28,11 @@
         echo include_once 'handlers/user/messages.php';
     }
 
+    if(preg_match('#^\/dialogue/(?<id>\d+)$#', $url, $match)) {
+        $_SESSION['view']['dialogue_id'] = $match['id'];
+        echo include_once 'handlers/user/dialogue.php';
+    }
+
     if(preg_match('#^\/update$#', $url, $match)) {
         echo include_once 'handlers/ajax/update.php';
     }
