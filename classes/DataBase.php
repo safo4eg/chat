@@ -147,4 +147,36 @@
                 return $data;
             }
         }
+
+        public function setTimeStampDialogue($id, $companionId) {
+            $time = time();
+
+            $query = "UPDATE dialogues SET timestamp=FROM_UNIXTIME($time) WHERE user_id=$companionId AND companion_id=$id";
+            $res = mysqli_query($this->link, $query);
+
+            if(!$res) {
+                http_response_code(400);
+                $error[] = 'WARNING: ' . mysqli_error($this->link);
+                $error[] = 'File: DataBase.php, method: setTimeStampDialogue';
+                echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                die();
+            }
+        }
+
+        public function getTimeStampDialogue($id, $companionId) {
+            $query = "SELECT UNIX_TIMESTAMP(timestamp) as timestamp FROM dialogues WHERE user_id=$id AND companion_id=$companionId";
+            $res = mysqli_query($this->link, $query);
+
+            if(!$res) {
+                http_response_code(400);
+                $error[] = 'WARNING: ' . mysqli_error($this->link);
+                $error[] = 'File: DataBase.php, method: setTimeStampDialogue';
+                echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                die();
+            }
+
+            $data = mysqli_fetch_assoc($res);
+
+            return $data;
+        }
     }

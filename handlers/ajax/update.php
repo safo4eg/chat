@@ -2,14 +2,14 @@
     $link = include 'includes/connect.php';
     include 'classes/DataBase.php';
 
-    if(!empty($_POST)) {
+    if(isset($_POST['action'])) {
         $currentUserId = $_SESSION['auth']['id'];
         $db = new DataBase($link);
-//        if(isset($_POST['timestamp'])) {
-//            $response = $db->setTimestamp($currentUserId);
-//            echo json_encode($response, JSON_UNESCAPED_UNICODE);
-//            die();
-//        }
+        if(isset($_POST['timestamp'])) {
+            $response = $db->setTimestamp($currentUserId);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            die();
+        }
 
         if(isset($_POST['searchMessage'])) {
             $message = $_POST['message'];
@@ -21,11 +21,23 @@
             }
         }
 
-        if(isset($_POST['newMessage'])) {
+        if($_POST['action'] === 'newMessage') {
             $message = $_POST['message'];
-            $companionUserId = $_POST['companion_id'];
+            $companionUserId = $_POST['companionId'];
             $insertedMessageData = $db->sendMessage($currentUserId, $companionUserId, $message);
             echo json_encode($insertedMessageData, JSON_UNESCAPED_UNICODE);
             die();
+        }
+
+        if($_POST['action'] === 'input') {
+            $companionId = $_POST['companionId'];
+            $response = $db->setTimeStampDialogue($currentUserId, $companionId);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE); die();
+        }
+
+        if($_POST['action'] === 'activity') {
+            $companionId = $_POST['companionId'];
+            $response = $db->getTimeStampDialogue($currentUserId, $companionId);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE); die();
         }
     }

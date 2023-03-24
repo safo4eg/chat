@@ -413,7 +413,7 @@ form.auth .errors-wrapper .error:nth-child(n + 2) {
 .content.dialogue {
     max-width: 600px;
     margin: 0 auto;
-    height: 600px;
+    height: 635px;
 
     padding: 15px 25px;
 }
@@ -488,7 +488,6 @@ form.auth .errors-wrapper .error:nth-child(n + 2) {
 }
 
 .content.dialogue .bot {
-    padding-top: 20px;
     height: 80px;
     display: flex;
 }
@@ -507,6 +506,30 @@ form.auth .errors-wrapper .error:nth-child(n + 2) {
     height: 20px;
     width: 40px;
     margin-left: 10px;
+}
+
+.loading-wrapper {
+    height: 40px;
+}
+
+.loading {
+    display: none;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 15px;
+    padding: 10px 0 0 50px;
+}
+
+.loading.active {
+    display:inline-block;
+    clip-path: inset(0 3ch 0 0);
+    animation: l 1s steps(4) infinite;
+}
+
+@keyframes l {
+    to {
+        clip-path: inset(0 -1ch 0 0)
+    }
 }
 
 

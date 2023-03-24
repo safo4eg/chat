@@ -1,7 +1,6 @@
 {{title: "Сообщения"}}
 {{content-class: "dialogue"}}
 {{script1: "../js/update.js"}}
-{{script2: "../js/dialogue.js"}}
 
 <div class="top">
     <a  class="back" href="/messages">Назад</a>
@@ -27,11 +26,11 @@
                     <?php if( $message['user_id'] !== $_SESSION['auth']['id']) { ?>
                         <img src="/media/uploads/<?=
                         $_SESSION['view']['companion_info']['avatar']? $_SESSION['view']['companion_info']['avatar']: "default.png"
-                        ?>" alt="">
+                        ?>" alt="you">
                     <?php } else { ?>
                         <img src="/media/uploads/<?=
                         $_SESSION['view']['user_info']['avatar']? $_SESSION['view']['user_info']['avatar']: "default.png"
-                        ?>" alt="">
+                        ?>" alt="companion">
                     <?php } ?>
                 </a>
 
@@ -56,9 +55,13 @@
     <?php } ?>
 </div>
 
+<div class="loading-wrapper">
+    <span class="loading">Печатает...</span>
+</div>
+
 <div class="bot">
     <textarea placeholder="Новое сообщение"></textarea>
-    <input type="hidden" value="<?= $_SESSION['view']['companion_info']['id'] ?>">
-    <input type="hidden" value="<?= $lastMessageUserId ?>">
+    <input id="companionId" type="hidden" value="<?= $_SESSION['view']['companion_info']['id'] ?>">
+    <input id="lastUserId" type="hidden" value="<?= $lastMessageUserId ?>">
     <button>Send</button>
 </div>
